@@ -2,7 +2,7 @@
 
 % scanning parameters
 delta_ti = 0.6;
-slice_shifting_factor = 2;
+slice_shifting_factor = 8;
 actual_sampling_rate = delta_ti / slice_shifting_factor;
 
 t = 0.04 : actual_sampling_rate : 7;
@@ -24,8 +24,8 @@ t1_blood  = 1.6;
 asl_signal_ref = calculate_delta_M_tissue(cbf_0, tau_0, t, t1_tissue, t1_blood, arrival_time, n_bolus, delta_bolus);
 
 % Grids
-vector_cbf = 30 : 0.1 : 90;
-vector_tau = 0.4 : 0.01 : 0.8;
+vector_cbf = 40 : 0.1 : 80;
+vector_tau = 0.4 : 0.001 : 0.8;
 
 
 
@@ -70,4 +70,13 @@ plot(another_siganl(:), 'r');
 figure;
 
 surf(vector_tau, vector_cbf, rmse_2D_matrix);
+
+local_mins = imregionalmin(rmse_2D_matrix, 4);
+
+figure;
+plot(local_mins);
+
+% Grey scale image
+figure;
+imshow(mat2gray(local_mins));
 
